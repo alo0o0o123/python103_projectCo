@@ -36,6 +36,17 @@ def new_entry(entry):
         return True
 
 
+def calling_modifications(client_book_item):
+    return Modifications(account_id=client_book_item['account_info']['account_id'],
+                         account_balance=client_book_item['account_info']['account_balance'],
+                         account_password=client_book_item['account_info']['account_password'],
+                         account_type=client_book_item['account_info']['account_type'],
+                         national_id=client_book_item['personal_info']['National_id'],
+                         first_name=client_book_item['personal_info']['first_name'],
+                         last_name=client_book_item['personal_info']['last_name'],
+                         mobile=client_book_item['personal_info']['mobile_no'])
+
+
 running = True  # The boolean variable that used by the main while loop of this program
 used_sequence = []  # A serial number list that contains a suffix number of newly created client. Ex client1, client2,..
 item = {}  # Declare here so it will not give warning that says (variable can be unidentified)
@@ -84,14 +95,7 @@ while running:  # Program starts here.
         for key, value in clients_book.items():
             print(key)
             item = value
-            current_client = Modifications(item['account_info']['account_id'],
-                                           item['account_info']['account_balance'],
-                                           item['account_info']['account_password'],
-                                           item['account_info']['account_type'],
-                                           item['personal_info']['National_id'],
-                                           item['personal_info']['first_name'],
-                                           item['personal_info']['last_name'],
-                                           item['personal_info']['mobile_no'])
+            current_client = calling_modifications(item)
             current_client.account_display()
             current_client.personal_display()
             print('\n')
@@ -115,14 +119,7 @@ while running:  # Program starts here.
             password = input('Enter your password: ')
             if password == item['account_info']['account_password']:
                 # Create an object contains the data for that selected account
-                current_client = Modifications(item['account_info']['account_id'],
-                                               item['account_info']['account_balance'],
-                                               item['account_info']['account_password'],
-                                               item['account_info']['account_type'],
-                                               item['personal_info']['National_id'],
-                                               item['personal_info']['first_name'],
-                                               item['personal_info']['last_name'],
-                                               item['personal_info']['mobile_no'])
+                current_client = calling_modifications(item)
                 attempts = 0  # To make sure that the upper while loop can not run without a correct account id
                 inside = True  # This is for the next loop that designed for a client special menu
                 while inside:  # Start client menu here
