@@ -57,16 +57,16 @@ class BankAccount:
     def deposit_setter(self, add):  # To add money to the account and print the transaction details
         # this line is to apply the change to the object it self, so it can accept another transaction without having
         # to logoff from the object and create it again
-        self.account_balance = self.account_balance + int(add)
+        self.account_balance = round(self.account_balance + float(add), 3)
         print(f'تم ايداع {add} ريال لرصيدك البنكي في يوم '
               f'{BankAccount.day_name} بتاريخ  {BankAccount.today_date} الساعه {BankAccount.transaction_time}')
         return self.account_balance
 
     def withdraw_setter(self, deduct):  # To deduct money to the account and print the transaction details
-        if self.account_balance >= int(deduct):  # To check whether or not the account is sufficient
+        if self.account_balance >= float(deduct):  # To check whether or not the account is sufficient
             # this line is to apply the change to the object it self, so it can accept another transaction without
             # having to logoff from the object and create it again
-            self.account_balance = self.account_balance - int(deduct)
+            self.account_balance = round(self.account_balance - float(deduct), 3)
             print(f'تم خصم {deduct} ريال من رصيدك البنكي في يوم .'
                   f'{BankAccount.day_name} بتاريخ  {BankAccount.today_date} الساعه {BankAccount.transaction_time}')
             return self.account_balance
