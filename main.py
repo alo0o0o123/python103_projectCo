@@ -132,14 +132,30 @@ while running:  # Program starts here.
                                     "Enter 0 to logoff:\n")
                     print('\n')
                     if choice2 == '1':
-                        choice2 = input("enter amount for deposit:\n")
-                        # To add money then update the clients book dictionary
-                        item['account_info']['account_balance'] = current_client.deposit_setter(choice2)
+                        deposit = True
+                        while deposit:
+                            choice2 = input("enter amount for deposit:\n")
+                            transaction_pattern = re.compile(r"\d+")
+                            if re.match(transaction_pattern, choice2):
+                                # To add money then update the clients book dictionary
+                                item['account_info']['account_balance'] = current_client.deposit_setter(choice2)
+                                deposit = False
+                            else:
+                                print("Wrong Entry, please enter an integer number only!")
+                                deposit = True
 
                     elif choice2 == '2':
-                        choice2 = input("enter amount to withdraw:\n")
-                        # To deduct money then update the clients book dictionary
-                        item['account_info']['account_balance'] = current_client.withdraw_setter(choice2)
+                        deposit = True
+                        while deposit:
+                            choice2 = input("enter amount to withdraw:\n")
+                            transaction_pattern = re.compile(r"\d+")
+                            if re.match(transaction_pattern, choice2):
+                                # To deduct money then update the clients book dictionary
+                                item['account_info']['account_balance'] = current_client.withdraw_setter(choice2)
+                                deposit = False
+                            else:
+                                print("Wrong Entry, please enter an integer number only!")
+                                deposit = True
 
                     elif choice2 == '3':
                         choice2 = input("enter new mobile no :\n")
