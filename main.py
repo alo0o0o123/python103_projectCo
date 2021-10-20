@@ -1,6 +1,8 @@
 from clients import Client
 from modifications import Modifications
 import re
+import ast
+import pprint
 
 
 def new_entry(entry):
@@ -24,6 +26,8 @@ def new_entry(entry):
             new_client += f"client{i}"
             client_info = Client(new_client, cl_n_id, cl_f_name, cl_l_name,
                                  cl_mobile)  # Create an object
+
+            # THIS LINE NOT USEFUL WITH WORKING WITH FILES BECAUSE IT WILL START THE NUMBER ALL OVER AGAIN
             used_sequence.append(i)  # Add this number to used_sequence so it will not be used again
 
             # Add the new client info to a clients_book using a setter method
@@ -52,25 +56,32 @@ item = {}  # Declare here so it will not give warning that says (variable can be
 # clients_book = {}  # It's the empty version of the database that contains all clients details.
 
 # Next dictionary is an example with tow clients info that can be used instead of the empty clients_book dictionary
-clients_book = {'client00': {'account_info': {'account_balance': 0,
-                                              'account_id': 1022821753,
-                                              'account_password': '0000',
-                                              'account_type': 'normal'},
-                             'personal_info': {'National_id': 1022818684,
-                                               'first_name': 'Khalid',
-                                               'last_name': 'Waleed',
-                                               'mobile_no': 500053197}},
-                'client0': {'account_info': {'account_balance': 0,
-                                             'account_id': 1066865284,
-                                             'account_password': '0000',
-                                             'account_type': 'normal'},
-                            'personal_info': {'National_id': 1066858745,
-                                              'first_name': 'Ali',
-                                              'last_name': 'Ahmed',
-                                              'mobile_no': 533222025}}}
+# clients_book = {'client00': {'account_info': {'account_balance': 0,
+#                                               'account_id': 1022821753,
+#                                               'account_password': '0000',
+#                                               'account_type': 'normal'},
+#                              'personal_info': {'National_id': 1022818684,
+#                                                'first_name': 'Khalid',
+#                                                'last_name': 'Waleed',
+#                                                'mobile_no': 500053197}},
+#                 'client0': {'account_info': {'account_balance': 0,
+#                                              'account_id': 1066865284,
+#                                              'account_password': '0000',
+#                                              'account_type': 'normal'},
+#                             'personal_info': {'National_id': 1066858745,
+#                                               'first_name': 'Ali',
+#                                               'last_name': 'Ahmed',
+#                                               'mobile_no': 533222025}}}
 
 
 while running:  # Program starts here.
+    # To open the file that has dictionary inside, read it all, and save it in a dictionary variable
+    # The code is doing good, BUT THAT IS NOT GOOD BECAUSE IT READS THE WHOLE FILE WHILE I NEED ONLY ONE PART OF
+    # THAT FILE
+    with open('clients_book.txt', 'r+') as c:
+        cont = c.read()
+        clients_book = ast.literal_eval(cont)
+
     choice1 = input("Enter the account number, or"
                     " '1' to create a new account,"
                     " '2' to check the clients book"
@@ -86,6 +97,13 @@ while running:  # Program starts here.
                             "Mobile Number' Where:\nNational ID is 10 digits long\nMobile number is 9 digit long "
                             "starts with 5\nExample: '1200220022, Khalid, Ali, 500005000'\n")
                 review = new_entry(new)
+
+                # To open the file in write mode and update it with new client that has been created
+                # This is working fine, BUT THE PROBLEM IS THAT THIS CODE WILL OVERRIDE THE WHOLE FILE WHERE I ONLY NEED
+                # TO APPEND THE NEW CLIENT TO THE DICTIONARY INSIDE THE FILE
+                clients_book = pprint.pformat(clients_book)
+                with open('clients_book.txt', 'w') as c:
+                    c.write(str(clients_book))
 
     elif choice1 == "0":  # 2nd choice
         running = False  # To stop the program
@@ -128,7 +146,9 @@ while running:  # Program starts here.
                                     "Enter '4' for updating password:\n"
                                     "Enter '5' for Account Info:\n"
                                     "or\n"
-                                    "Enter 0 to logoff:\n")
+                                    "Enter 0 to logoff:\n"
+                                    "NOTE:\n"
+                                    "YOU MUST ENTER 0 TO SAVE ALL MODIFICATIONS YOU'VE MADE TO THE CLIENT ACCOUNT\n")
                     print('\n')
                     if choice2 == '1':
                         deposit = True
@@ -182,6 +202,13 @@ while running:  # Program starts here.
                         current_client.personal_display()
 
                     elif choice2 == '0':  # To leave and close the account
+                        # To open the file in write mode and update it with with all transaction that happened to
+                        # the selected client
+                        # This is working fine, BUT THE PROBLEM IS THAT THIS CODE WILL OVERRIDE THE WHOLE FILE WHERE I
+                        # ONLY NEED TO UPDATE THE SELECTED CLIENT ACCOUNT
+                        clients_book = pprint.pformat(clients_book)
+                        with open('clients_book.txt', 'w') as c:
+                            c.write(str(clients_book))
                         inside = False
 
                     else:  # For unexpected entry from the user
